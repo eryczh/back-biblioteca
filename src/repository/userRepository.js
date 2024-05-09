@@ -2,7 +2,7 @@ import con from "./connection.js";
 
 export async function userSave(user) {
   let command = `
-    INSERT INTO tb_admin (nome_adm, email_adm, senha_adm)
+    INSERT INTO tb_Admin (nome_adm, email_adm, senha_adm)
                   VALUES (?, ?, ?)
   `
 
@@ -16,7 +16,7 @@ export async function userSave(user) {
 export async function userLists() {
   let command = `
     SELECT * 
-      FROM tb_admin
+      FROM tb_Admin
   `
 
   let resp = await con.query(command, []);
@@ -25,12 +25,12 @@ export async function userLists() {
   return line;
 }
 
-export async function removerAluno(id) {
+export async function removeUser(id) {
   let command = `
-    DELETE FROM tb_admin WHERE id_admin = ?
+    DELETE FROM tb_Admin WHERE id_adm = ?
   `
 
-  let resp = await con.query(comando, [id]);
+  let resp = await con.query(command, [id]);
   let info = resp[0];
 
   return info.affectedRows;

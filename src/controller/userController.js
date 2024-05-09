@@ -1,4 +1,4 @@
-import { userSave, userLists} from "../repository/userRepository.js";
+import { userSave, userLists, removeUser} from "../repository/userRepository.js";
 
 import { Router } from "express";
 let server = Router();
@@ -18,7 +18,7 @@ server.get('/user', async(req, resp) => {
 server.delete('/user/:id', async(req, resp) => {
   let id = req.params.id;
 
-  let remove = await removerUser(id);
+  let remove = await removeUser(id);
   if(remove == 0)
     resp.status(404).send();
   else
