@@ -13,6 +13,17 @@ export async function userSave(user) {
   return user;
 }
 
+export async function userLogin(user) {
+  let command = `
+    SELECT * FROM tb_Admin WHERE email_adm = ? AND senha_adm = ?
+  `
+
+  let resp = await con.query (command, [user.email, user.password])
+  let info = resp[0];
+
+  return info;  
+}
+
 export async function userLists() {
   let command = `
     SELECT * 

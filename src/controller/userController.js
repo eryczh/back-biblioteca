@@ -15,6 +15,11 @@ server.get('/user', async(req, resp) => {
   resp.send(userl);
 })
 
+server.get('/user/login', async (req, resp) => {
+  let userInsert = await userLogin();
+  resp.send(userInsert);
+})
+
 server.delete('/user/:id', async(req, resp) => {
   let id = req.params.id;
 
