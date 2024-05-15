@@ -6,7 +6,7 @@ export async function addClothes(itens) {
           VALUES (?, ?, ?, ?, ?, ?)
   `
 
-  let resp = await con.query(command, [itens.nome, itens.desc, itens.preco, itens.preco, itens.tam, itens.mat, itens.img])
+  let resp = await con.query(command, [itens.nome, itens.desc, itens.preco, itens.tam, itens.mat, itens.img])
   let info = resp[0];
 
   itens.id = info.insertId;
