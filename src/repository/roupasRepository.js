@@ -1,16 +1,16 @@
 import con from './connection.js';
 
-export async function addClothes(itens) {
+export async function addClothes(roupa) {
   let command = `
     INSERT INTO tb_Roupa (nome_Roupa, desc_Roupa, preco_adm, tam_Roupa, mat_Roupa, img_Roupa)
           VALUES (?, ?, ?, ?, ?, ?)
   `
 
-  let resp = await con.query(command, [itens.nome, itens.desc, itens.preco, itens.tam, itens.mat, itens.img])
+  let resp = await con.query(command, [roupa.nome, roupa.desc, roupa.preco, roupa.tam, roupa.mat, roupa.img])
   let info = resp[0];
 
   itens.id = info.insertId;
-  return itens;
+  return roupa;
 }
 
 export async function listClothes() {

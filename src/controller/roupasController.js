@@ -1,14 +1,14 @@
 import multer from "multer";
-
+import uploadUser from '../middlewares/uploadImage.js';
 import { addClothes, listClothes, deleteClothes, alterClothes, alterClothesImage } from "../repository/roupasRepository.js";
 import { Router } from "express";
 
 let server = Router();
-
 const upload = multer({ dest: 'storage/roupa' })
 
-server.post('/roupa', async(req, resp) => {
+server.post('/roupa', uploadUser.single('imagem'), async(req, resp) => {
   let clothes = req.body;
+  let img = req.file;
 
   let insertClothes = await addClothes(clothes);
   resp.send(insertClothes);
