@@ -9,7 +9,7 @@ export async function addClothes(roupa) {
   let resp = await con.query(command, [roupa.nome, roupa.desc, roupa.preco, roupa.tam, roupa.mat, roupa.img])
   let info = resp[0];
 
-  itens.id = info.insertId;
+  roupa.id = info.insertId;
   return roupa;
 }
 
