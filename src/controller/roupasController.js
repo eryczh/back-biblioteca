@@ -6,9 +6,11 @@ import { Router } from "express";
 let server = Router();
 const upload = multer({ dest: 'storage/roupa' })
 
-server.post('/roupa', uploadUser.single('imagem'), async(req, resp) => {
+server.post('/roupa', upload.single('imagem'), async(req, resp) => {
   let clothes = req.body;
   let img = req.file;
+
+  clothes.img = img ? img.path : null;
 
   let insertClothes = await addClothes(clothes);
   resp.send(insertClothes);
