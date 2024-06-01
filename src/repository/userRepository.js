@@ -46,3 +46,17 @@ export async function removeUser(id) {
 
   return info.affectedRows;
 }
+
+
+export async function updateUserPassword(email, newPassword) {
+  let command = `
+    UPDATE tb_Admin 
+    SET senha_adm = ? 
+    WHERE email_adm = ?
+  `;
+
+  let resp = await con.query(command, [newPassword, email]);
+  let info = resp[0];
+
+  return info.affectedRows;
+}

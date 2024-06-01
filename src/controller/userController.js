@@ -1,4 +1,4 @@
-import { userSave, userLists, removeUser, userLogin} from "../repository/userRepository.js";
+import { userSave, userLists, removeUser, userLogin, updateUserPassword} from "../repository/userRepository.js";
 
 import { Router } from "express";
 let server = Router();
@@ -28,6 +28,22 @@ server.post('/user/register', async (req, resp) => {
     resp.status(201).send(userInsert);
   } catch (error) {
     resp.status(500).send({message: "Erro ao criar user"});
+  }
+});
+
+server.put('/user/password', async (req, resp) => {
+  let { email, newPassword } = req.body;
+
+  try {
+    let rowsUpdated = await updateUserPassword(email, newPassword);
+    if (rowsUpdated === 0) {
+      resp.status(404).send({ message: "Usuário não encontrado" });
+    } else {
+      resp.status(200).send({ message: "Senha atualizada com sucesso" });
+    }
+  } catch (error) {
+    console.error(error); // Adicionando log para debug
+    resp.status(500).send({ message: "Erro ao atualizar a senha" });
   }
 });
 
