@@ -1,6 +1,6 @@
 import multer from "multer";
 import uploadUser from '../middlewares/uploadImage.js';
-import { addClothes, listClothes, deleteClothes, alterClothes, alterClothesImage } from "../repository/roupasRepository.js";
+import { addClothes, listClothes, deleteClothes, alterClothes, alterClothesImage, listClothesPerId } from "../repository/roupasRepository.js";
 import { Router } from "express";
 
 let server = Router();
@@ -19,6 +19,14 @@ server.post('/roupa', upload.single('imagem'), async(req, resp) => {
 server.get('/roupa', async(req, resp) => {
   let listsClothes = await listClothes();
   resp.send(listsClothes);
+})
+
+server.get('/roupa/:id', async (req, resp) => {
+  let id = req.params.id;
+
+  let clothesPerId = await listClothesPerId(id);
+
+  resp.send(clothesPerId);
 })
 
 server.delete('/roupa/:id', async (req, resp) => {

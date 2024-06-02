@@ -31,6 +31,25 @@ export async function listClothes() {
   return linhas;
 }
 
+export async function listClothesPerId(id) {
+  let command = `
+      SELECT  id_Roupa    id,
+          nome_Roupa  nome,
+          desc_Roupa  descricao,
+          preco_adm   preco,
+          tam_Roupa   tamanho,
+          mat_Roupa   material,
+          img_Roupa   imagem
+      FROM tb_Roupa
+      WHERE id_Roupa = ?
+  `;
+
+  let resp = await con.query(command, [id]);
+  let linhas = resp[0];
+
+  return linhas[0];
+}
+
 export async function deleteClothes(id) {
   let command = `
     DELETE FROM tb_Roupa WHERE id_Roupa = ?
