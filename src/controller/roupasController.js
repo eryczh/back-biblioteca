@@ -39,14 +39,18 @@ server.delete('/roupa/:id', async (req, resp) => {
 })
 
 server.put('/roupa/:id', async (req, resp) => {
-  let id = req.params.id; 
+  let id = req.params.id;
   let clothes = req.body;
 
-  let linesAffect = await alterClothes(id, clothes);
-  if (linesAffect == 0)
-    resp.status(404).send();
-  else
-  resp.status(202).send();
+  try {
+    let linesAffect = await alterClothes(clothes, id);
+    if (linesAffect == 0)
+      resp.status(404).send();
+    else
+      resp.status(202).send();
+  } catch (err) {
+    resp.status(500).send("Erro ao atualizar roupa.");
+  }
 })
 
 server.put('/roupa/imagem/:id', upload.single('imagem'), async (req, resp) => {

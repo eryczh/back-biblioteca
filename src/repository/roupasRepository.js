@@ -1,12 +1,18 @@
-import con from './connection.js';
+import con from "./connection.js";
 
 export async function addClothes(roupa) {
   let command = `
     INSERT INTO tb_Roupa (nome_Roupa, desc_Roupa, preco_adm, mat_Roupa, img_Roupa)
           VALUES (?, ?, ?, ?, ?)
-  `
+  `;
 
-  let resp = await con.query(command, [roupa.nome, roupa.desc, roupa.preco, roupa.mat, roupa.img])
+  let resp = await con.query(command, [
+    roupa.nome,
+    roupa.desc,
+    roupa.preco,
+    roupa.mat,
+    roupa.img,
+  ]);
   let info = resp[0];
 
   roupa.id = info.insertId;
@@ -59,7 +65,6 @@ export async function deleteClothes(id) {
   return info.affectedRows;
 }
 
-
 export async function alterClothes(roupa, id) {
   const command = `
     UPDATE tb_Roupa
@@ -71,14 +76,19 @@ export async function alterClothes(roupa, id) {
   `;
 
   try {
-    const [rows] = await con.query(command, [roupa.nome, roupa.descricao, roupa.preco, roupa.material, id]);
+    const [rows] = await con.query(command, [
+      roupa.nome,
+      roupa.descricao,
+      roupa.preco,
+      roupa.material,
+      id
+    ]);
     return rows.affectedRows;
   } catch (err) {
-    console.error('Erro ao atualizar roupa:', err);
+    console.error("Erro ao atualizar roupa:", err);
     throw err;
   }
 }
-
 
 export async function alterClothesImage(id, caminho) {
   let command = `
@@ -92,4 +102,3 @@ export async function alterClothesImage(id, caminho) {
 
   return info.affectedRows;
 }
-
