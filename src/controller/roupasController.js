@@ -1,6 +1,7 @@
 import multer from "multer";
-import { addClothes, listClothes, deleteClothes, alterClothes, alterClothesImage, listClothesPerId } from "../repository/roupasRepository.js";
 import { Router } from "express";
+
+import { addClothes, listClothes, deleteClothes, alterClothes, alterClothesImage, listClothesPerId } from "../repository/roupasRepository.js";
 
 let server = Router();
 const upload = multer({ dest: 'storage/roupa' })
@@ -55,11 +56,7 @@ server.put('/roupa/:id', async (req, resp) => {
 
 server.put('/roupa/imagem/:id', upload.single('imagem'), async (req, resp) => {
   let id = req.params.id;
-  let clothes = req.file ? req.file.path : null;  // Verifica se req.file é undefined
-
-  if (!clothes) {
-    return resp.status(400).send('Nenhuma imagem enviada');
-  }
+  let clothes = req.file.path;
 
   let linhasAfetadas = await alterClothesImage(id, clothes);
   if (linhasAfetadas == 0)
@@ -67,6 +64,5 @@ server.put('/roupa/imagem/:id', upload.single('imagem'), async (req, resp) => {
   else
     resp.status(202).send();
 })
-
 
 export default server;
