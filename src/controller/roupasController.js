@@ -1,5 +1,4 @@
 import multer from "multer";
-import uploadUser from '../middlewares/uploadImage.js';
 import { addClothes, listClothes, deleteClothes, alterClothes, alterClothesImage, listClothesPerId } from "../repository/roupasRepository.js";
 import { Router } from "express";
 
