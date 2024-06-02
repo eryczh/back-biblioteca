@@ -18,12 +18,11 @@ create table tb_Roupa (
     nome_Roupa		varchar(30) not null,
     desc_Roupa		varchar(400) not null,
     preco_adm	  double not null,
-    tam_Roupa		varchar(30) not null,
     mat_Roupa		varchar(30) not null,
     img_Roupa		varchar(200) not null
 );
 
-insert into tb_Roupa (nome_Roupa, desc_Roupa, preco_adm, tam_Roupa, mat_Roupa, img_Roupa)
-values ('Camiseta Preta', 'Camiseta preta básica de algodão', 125.99, 'M', 'Algodão', 'imagem.jpg');
+insert into tb_Roupa (nome_Roupa, desc_Roupa, preco_adm, mat_Roupa, img_Roupa)
+values ('Camiseta Preta', 'Camiseta preta básica de algodão', 125.99,  'Algodão', 'imagem.jpg');
 
 select * from tb_Roupa;

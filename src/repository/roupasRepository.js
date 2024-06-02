@@ -2,11 +2,11 @@ import con from './connection.js';
 
 export async function addClothes(roupa) {
   let command = `
-    INSERT INTO tb_Roupa (nome_Roupa, desc_Roupa, preco_adm, tam_Roupa, mat_Roupa, img_Roupa)
-          VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO tb_Roupa (nome_Roupa, desc_Roupa, preco_adm, mat_Roupa, img_Roupa)
+          VALUES (?, ?, ?, ?, ?)
   `
 
-  let resp = await con.query(command, [roupa.nome, roupa.desc, roupa.preco, roupa.tam, roupa.mat, roupa.img])
+  let resp = await con.query(command, [roupa.nome, roupa.desc, roupa.preco, roupa.mat, roupa.img])
   let info = resp[0];
 
   roupa.id = info.insertId;
@@ -19,7 +19,6 @@ export async function listClothes() {
             nome_Roupa  nome,
             desc_Roupa  descricao,
             preco_adm   preco,
-            tam_Roupa   tamanho,
             mat_Roupa   material,
             img_Roupa   imagem
     FROM tb_Roupa
@@ -37,7 +36,6 @@ export async function listClothesPerId(id) {
           nome_Roupa  nome,
           desc_Roupa  descricao,
           preco_adm   preco,
-          tam_Roupa   tamanho,
           mat_Roupa   material,
           img_Roupa   imagem
       FROM tb_Roupa
@@ -67,12 +65,11 @@ export async function alterClothes(roupa, id) {
     SET nome_Roupa = ?,
         desc_Roupa = ?,
         preco_adm = ?,
-        tam_Roupa = ?,
         mat_Roupa = ?
     WHERE id_Roupa = ?
   `;
 
-  let resp = await con.query(command, [roupa.nome, roupa.descricao, roupa.preco, roupa.tamanho, roupa.material, id]);
+  let resp = await con.query(command, [roupa.nome, roupa.descricao, roupa.preco, roupa.material, id]);
   let info = resp[0];
 
   return info.affectedRows;
