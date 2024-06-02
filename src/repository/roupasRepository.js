@@ -59,8 +59,9 @@ export async function deleteClothes(id) {
   return info.affectedRows;
 }
 
+
 export async function alterClothes(roupa, id) {
-  let command = `
+  const command = `
     UPDATE tb_Roupa
     SET nome_Roupa = ?,
         desc_Roupa = ?,
@@ -69,11 +70,15 @@ export async function alterClothes(roupa, id) {
     WHERE id_Roupa = ?
   `;
 
-  let resp = await con.query(command, [roupa.nome, roupa.descricao, roupa.preco, roupa.material, id]);
-  let info = resp[0];
-
-  return info.affectedRows;
+  try {
+    const [rows] = await con.query(command, [roupa.nome, roupa.descricao, roupa.preco, roupa.material, id]);
+    return rows.affectedRows;
+  } catch (err) {
+    console.error('Erro ao atualizar roupa:', err);
+    throw err;
+  }
 }
+
 
 export async function alterClothesImage(id, caminho) {
   let command = `
