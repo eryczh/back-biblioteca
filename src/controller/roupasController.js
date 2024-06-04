@@ -63,6 +63,6 @@ server.put('/roupa/imagem/:id', upload.single('imagem'), async (req, resp) => {
     resp.status(404).send();
   else
     resp.status(202).send();
-})
+});
 
 export default server;
