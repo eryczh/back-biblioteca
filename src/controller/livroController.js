@@ -21,7 +21,7 @@ livroController.post('/livros', upload.single('foto'), async (req, resp) => {
 
   livroController.get('/livros', async (req, resp) => {
     let listLivro = await listLivros();
-    console.log(listLivro);  // Verifique se os caminhos das imagens estão corretos
+    console.log(listLivro);  
     resp.send(listLivro);
 });
 

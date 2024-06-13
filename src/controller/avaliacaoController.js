@@ -2,7 +2,7 @@ import { criarAvaliacao, listarAvaliacoes, listarAvaliacoesPorLivro, listarAvali
 import { Router } from "express";
 const avaliacaoController = Router();
 
-// Criar uma nova avaliação
+
 avaliacaoController.post('/avaliacao', async (req, resp) => {
     const avaliacao = req.body;
     try {
@@ -13,7 +13,7 @@ avaliacaoController.post('/avaliacao', async (req, resp) => {
     }
 });
 
-// Listar todas as avaliações
+
 avaliacaoController.get('/avaliacao', async (req, resp) => {
     try {
         const avaliacoes = await listarAvaliacoes();
@@ -23,7 +23,7 @@ avaliacaoController.get('/avaliacao', async (req, resp) => {
     }
 });
 
-// Listar avaliações por livro
+
 avaliacaoController.get('/avaliacao/livro/:livro_id', async (req, resp) => {
     const livro_id = req.params.livro_id;
     try {
@@ -34,7 +34,7 @@ avaliacaoController.get('/avaliacao/livro/:livro_id', async (req, resp) => {
     }
 });
 
-// Listar avaliações por usuário
+
 avaliacaoController.get('/avaliacao/usuario/:user_id', async (req, resp) => {
     const user_id = req.params.user_id;
     try {
@@ -45,7 +45,6 @@ avaliacaoController.get('/avaliacao/usuario/:user_id', async (req, resp) => {
     }
 });
 
-// Deletar uma avaliação
 avaliacaoController.delete('/avaliacao/:id', async (req, resp) => {
     const id = req.params.id;
     try {
@@ -56,7 +55,7 @@ avaliacaoController.delete('/avaliacao/:id', async (req, resp) => {
     }
 });
 
-// Atualizar uma avaliação
+
 avaliacaoController.put('/avaliacao/:id', async (req, resp) => {
     const id = req.params.id;
     const avaliacao = req.body;
