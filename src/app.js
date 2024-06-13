@@ -14,7 +14,7 @@ server.use(userController);
 server.use(livroController);
 server.use(avaliacaoController);
 
-server.use('/storage/capa', express.static('/storage/capa'));
+server.use('/storage/capa', express.static('storage/capa'));
 
 let port = process.env.PORT;
 server.listen(port, () => console.log("API SUBIU!"));

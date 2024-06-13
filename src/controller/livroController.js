@@ -4,106 +4,93 @@ import { addLivros, listLivros, listPerId, deleteLivro, alterLivro, alterCapaLiv
 
 const livroController = express.Router();
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'storage/capa'); 
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname); // Nome único para o arquivo
-    }
-});
-
-const upload = multer({ storage: storage });
+const upload = multer({ dest: 'storage/capa' });
 
 
-livroController.post('/livros', upload.single('foto'), async (req, res) => {
-    const livro = req.body;
-    if (req.file) {
-        
-        livro.foto = `capa/${req.file.filename}`;
-        console.log("Caminho da imagem salva:", livro.foto);
-    }
-    try {
-        const novoLivro = await addLivros(livro);
-        res.status(201).send(novoLivro);
-    } catch (error) {
-        res.status(500).send({ message: "Erro ao adicionar um novo livro" });
-    }
+livroController.post('/livros', upload.single('foto'), async (req, resp) => {
+    let livro = req.body;
+    let foto = req.file;
+  
+    livro.foto = foto ? foto.path : null;
+  
+    let insertLivro = await addLivros(livro);
+    resp.send(insertLivro);
+  }); 
+  
+
+
+  livroController.get('/livros', async (req, resp) => {
+    let listLivro = await listLivros();
+    console.log(listLivro);  // Verifique se os caminhos das imagens estão corretos
+    resp.send(listLivro);
 });
 
 
-livroController.get('/livros', async (req, res) => {
-    try {
-        const livros = await listLivros();
-        res.status(200).send(livros);
-    } catch (error) {
-        res.status(500).send({ message: "Erro ao listar os livros" });
-    }
-});
+livroController.get('/livros/:id', async (req, resp) => {
+    let id = req.params.id;
+    
+    let livroPerId = await listPerId(id);
 
-livroController.get('/livros/:id', async (req, res) => {
-    const id = req.params.id;
-    try {
-        const livro = await listPerId(id);
-        if (!livro) {
-            res.status(404).send({ message: "Livro não encontrado" });
-        } else {
-            res.status(200).send(livro);
-        }
-    } catch (error) {
-        res.status(500).send({ message: "Erro ao obter o livro" });
-    }
+    resp.send(livroPerId);
 });
 
 
-livroController.delete('/livros/:id', async (req, res) => {
-    const id = req.params.id;
-    try {
-        const result = await deleteLivro(id);
-        if (result === 0) {
-            res.status(404).send({ message: "Livro não encontrado" });
-        } else {
-            res.status(200).send({ message: "Livro deletado com sucesso" });
-        }
-    } catch (error) {
-        res.status(500).send({ message: "Erro ao deletar o livro" });
+livroController.delete('/livros/:id', async (req, resp) => {
+    let id = req.params.id;
+    
+    let linesAffect = await deleteLivro(id);
+    if (linesAffect === 0) {
+        resp.status(404).send({ message: "Livro não encontrado" });
+    } else {
+        resp.status(200).send({ message: "Livro deletado com sucesso" });
     }
+    
 });
 
 
 livroController.put('/livros/:id', async (req, res) => {
     const id = req.params.id;
     const livro = req.body;
-    try {
-        const result = await alterLivro(livro, id);
-        if (result === 0) {
-            res.status(404).send({ message: "Livro não encontrado" });
-        } else {
-            res.status(200).send({ message: "Livro atualizado com sucesso" });
-        }
-    } catch (error) {
-        res.status(500).send({ message: "Erro ao atualizar o livro" });
+
+    const result = await alterLivro(livro, id);
+    if (result === 0) {
+        res.status(404).send({ message: "Livro não encontrado" });
+    } else {
+        res.status(200).send({ message: "Livro atualizado com sucesso" });
+    }
+    
+});
+
+livroController.put('/livros/capa/:id', upload.single('foto'), async (req, resp) => {
+    let id = req.params.id;
+    let capa = req.file ? `storage/capa/${req.file.filename}` : null;
+
+    let linesAffect = await alterCapaLivro(id, capa);
+    if (linesAffect == 0) {
+        resp.status(404).send();
+    } else {
+        resp.status(202).send();
     }
 });
 
-livroController.put('/livros/capa/:id', upload.single('foto'), async (req, res) => {
-    const id = req.params.id;
-    if (!req.file) {
-        return res.status(400).send({ message: "Capa não enviada" });
-    }
-    const caminho = `capa/${req.file.filename}`;
-    try {
-        const result = await alterCapaLivro(id, caminho);
-        if (result === 0) {
-            res.status(404).send({ message: "Livro não encontrado" });
-        } else {
-            res.status(200).send({ message: "Capa do livro atualizada com sucesso" });
-        }
-    } catch (error) {
-        res.status(500).send({ message: "Erro ao atualizar a capa do livro" });
-    }
-});
+
+//livroController.put('/livros/capa/:id', upload.single('foto'), async (req, res) => {
+//    const id = req.params.id;
+//    if (!req.file) {
+//        return res.status(400).send({ message: "Capa não enviada" });
+//    }
+//    const caminho = `capa/${req.file.filename}`;
+//    try {
+//        const result = await alterCapaLivro(id, caminho);
+//        if (result === 0) {
+//            res.status(404).send({ message: "Livro não encontrado" });
+//        } else {
+//            res.status(200).send({ message: "Capa do livro atualizada com sucesso" });
+//       }
+//    } catch (error) {
+//        res.status(500).send({ message: "Erro ao atualizar a capa do livro" });
+//    }
+//});
 
 
 //livroController.put('/livros/capa/:id', upload.single('foto'), async (req, resp) => {
