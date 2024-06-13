@@ -1,28 +1,45 @@
-create database ftrxs;
-use ftrxs;
+CREATE DATABASE biblioteca;
 
-create table tb_Admin (
-	id_adm		  int primary key auto_increment,
-    nome_adm		varchar(50) not null,
-    email_adm	  varchar(25) not null,
-    senha_adm		varChar(10) not null
+USE biblioteca;
+
+CREATE TABLE livros (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    foto VARCHAR(255)
 );
 
-select * from tb_Admin;
+select * from livros;
 
-insert into tb_Admin (nome_adm, email_adm, senha_adm)
-values ('Admin', 'admin@gmail.com', 'senha@123');
+insert into livros (titulo, autor, descricao, foto)
+values('Uma vida pequena', 'Hanya Yanagihara ', 'Uma vida pequena é um dos livros mais surpreendentes, desafiadores, perturbadores e profundamente emocionantes das últimas décadas. Uma narrativa épica sobre amor e amizade de quatro jovens que consegue romper barreiras e impactar leitores. Candidato ao Prêmio Pulitzer de Literatura de 2016, além de finalista do Man Booker Prize e do National Book Award.', 'umaVidaPequena.jpg');
 
-create table tb_Roupa (
-    id_Roupa		int primary key auto_increment,
-    nome_Roupa		varchar(30) not null,
-    desc_Roupa		varchar(400) not null,
-    preco_adm	  double not null,
-    mat_Roupa		varchar(30) not null,
-    img_Roupa		varchar(200) not null
+ALTER TABLE livros ADD COLUMN genero VARCHAR(100);
+
+select * from livros;
+UPDATE livros
+SET genero = 'Ficção'
+WHERE id = 1;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL
 );
 
-insert into tb_Roupa (nome_Roupa, desc_Roupa, preco_adm, mat_Roupa, img_Roupa)
-values ('Camiseta Preta', 'Camiseta preta básica de algodão', 125.99,  'Algodão', 'imagem.jpg');
+select * from users;
 
-select * from tb_Roupa;
+insert into users(nome, email, senha)
+values ('eric', 'admin@gmail.com', 'admin123');
+
+CREATE TABLE avaliacoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    livro_id INT NOT NULL,
+    user_id INT NOT NULL,
+    nota INT NOT NULL,
+    comentario TEXT,
+    FOREIGN KEY (livro_id) REFERENCES livros(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
